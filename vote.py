@@ -1,5 +1,4 @@
-import time
-import os
+import time, os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -10,7 +9,6 @@ BOT_ID = 571027211407196161
 DELAY = 2
 TIMEOUT = 10
 AD_TIMEOUT = 30
-
 
 def main(token, bot):
     # Initialize Chrome browser
@@ -23,9 +21,8 @@ def main(token, bot):
 
     # Find Login to Vote and click
     loginElem = WebDriverWait(browser, 10).until(
-        EC.element_to_be_clickable(
-            (By.XPATH, ".//button[contains(text(),'Login to vote')]"))
-    )
+            EC.element_to_be_clickable((By.XPATH, ".//button[contains(text(),'Login to vote')]"))
+        )
     loginElem.click()
 
     # Wait for redirects
@@ -41,16 +38,15 @@ def main(token, bot):
 
         time.sleep(DELAY)
         browser.refresh()
-
+        
         # Wait for redirects until authorize page
         WebDriverWait(browser, TIMEOUT).until(
             EC.url_contains('https://discord.com/oauth2/authorize')
         )
-
+        
         # Find and click Authorize button
         authorizeElem = WebDriverWait(browser, TIMEOUT).until(
-            EC.presence_of_element_located(
-                (By.XPATH, ".//button/div[contains(text(),'Author')]"))
+            EC.presence_of_element_located((By.XPATH, ".//button/div[contains(text(),'Author')]"))
         )
         time.sleep(DELAY)
         authorizeElem.click()
@@ -62,8 +58,7 @@ def main(token, bot):
 
         # Find vote button
         voteBtn = WebDriverWait(browser, AD_TIMEOUT).until(
-            EC.element_to_be_clickable(
-                (By.XPATH, ".//button[contains(text(),'Vote')]"))
+            EC.element_to_be_clickable((By.XPATH, ".//button[contains(text(),'Vote')]"))
         )
         time.sleep(DELAY)
 
@@ -79,7 +74,6 @@ def main(token, bot):
     finally:
         browser.close()
 
-
 def add_token(driver, url, token='abc'):
     # JavaScript code to recreate the localStorage object, has to be executed after each reload on discord's sites.
     recreate_localStorage_script = '''
@@ -93,7 +87,7 @@ def add_token(driver, url, token='abc'):
     print('[add_token] url:', url)
     driver.get(url)  # Opens the URL
 
-    time.sleep(DELAY)  # Waits 1 second after the site loaded fully
+    time.sleep(1)  # Waits 1 second after the site loaded fully
 
     try:
         driver.execute_script(
@@ -112,8 +106,7 @@ def add_token(driver, url, token='abc'):
             f"return window.localStorage.getItem('token');"))  # Gets the token value from the localStorage
 
     except Exception as ex:
-        # If an exception occurs, it gets printed out here.
-        print('[Exception]', ex)
+        print('[Exception]', ex)  # If an exception occurs, it gets printed out here.
 
 
 if __name__ == '__main__':
