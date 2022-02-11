@@ -1,6 +1,7 @@
 import time
 import os
 from selenium import webdriver
+import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -14,12 +15,17 @@ AD_TIMEOUT = 30
 
 def main(token, bot):
     # Initialize Chrome browser
-    option = webdriver.ChromeOptions()
-    option.add_argument('--disable-blink-features=AutomationControlled')
-    browser = webdriver.Chrome(options=option)
+    options = uc.ChromeOptions()
+    options.add_argument('--disable-blink-features=AutomationControlled')
+    # options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    # options.add_experimental_option('useAutomationExtension', False)
+    browser = uc.Chrome(options=options)
 
     # Go to top.gg page
     browser.get('https://top.gg/bot/%s/vote' % bot)
+
+    # Cloudflare anti-bot
+    time.sleep(5)
 
     # Find Login to Vote and click
     loginElem = WebDriverWait(browser, 10).until(
@@ -27,6 +33,7 @@ def main(token, bot):
             (By.XPATH, ".//button[contains(text(),'Login to vote')]"))
     )
     loginElem.click()
+    print('[click] Login to Vote')
 
     # Wait for redirects
     try:
@@ -34,6 +41,7 @@ def main(token, bot):
         WebDriverWait(browser, TIMEOUT).until(
             EC.url_contains('https://discord.com/login')
         )
+        print('[wait] Login page')
 
         # Add token
         time.sleep(DELAY)
@@ -46,6 +54,7 @@ def main(token, bot):
         WebDriverWait(browser, TIMEOUT).until(
             EC.url_contains('https://discord.com/oauth2/authorize')
         )
+        print('[wait] Authorize page')
 
         # Find and click Authorize button
         authorizeElem = WebDriverWait(browser, TIMEOUT).until(
@@ -54,11 +63,13 @@ def main(token, bot):
         )
         time.sleep(DELAY)
         authorizeElem.click()
+        print('[click] Authorize')
 
         # Wait for redirects
         WebDriverWait(browser, TIMEOUT).until(
             EC.url_contains('https://top.gg/bot/%s/vote' % bot)
         )
+        print('[wait] Redirects')
 
         # Find vote button
         voteBtn = WebDriverWait(browser, AD_TIMEOUT).until(
@@ -66,6 +77,7 @@ def main(token, bot):
                 (By.XPATH, ".//button[contains(text(),'Vote')]"))
         )
         time.sleep(DELAY)
+        print('[clickable] Vote')
 
         # Move mouse to button, then click
         action_chain = ActionChains(browser)
@@ -73,6 +85,7 @@ def main(token, bot):
         action_chain.click(voteBtn)
         action_chain.perform()
         time.sleep(DELAY)
+        print('[click] Vote')
     except Exception as exc:
         print("An error occurred:\n %s" % (exc))
         pass
@@ -91,16 +104,20 @@ def add_token(driver, url, token='abc'):
     '''
 
     print('[add_token] url:', url)
-    driver.get(url)  # Opens the URL
 
-    time.sleep(DELAY)  # Waits 1 second after the site loaded fully
+    # Opens the URL
+    driver.get(url)
+
+    # Waits for delay time after the site loaded fully
+    time.sleep(DELAY)
 
     try:
         driver.execute_script(
             recreate_localStorage_script)  # Recreates the localStorage Object after it gets deleted by discord
         driver.execute_script(
             f"window.localStorage.setItem('token', '\"{token}\"');")  # Adds the token to login with to the localStorage
-        driver.refresh()  # Refreshes the Site
+        # Refreshes the Site
+        driver.refresh()
 
         # If you get redirected to https://discord.com/app it worked.
         # Otherwise the token probably doesn't work.

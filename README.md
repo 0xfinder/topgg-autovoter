@@ -16,6 +16,7 @@ The program opens a top.gg vote site, given a bot ID. It then logs in using the 
 ## Installation
 
 - Clone repo
+- `cd` into the directory
 - Run ```pip install -r requirements.txt```
 - Download chromedriver and add to PATH
 - Rename tokens.txt.example to tokens.txt and fill in discord tokens
