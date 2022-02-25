@@ -1,6 +1,5 @@
 import time
 import os
-from selenium import webdriver
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -30,7 +29,7 @@ def main(token, bot):
     # Find Login to Vote and click
     loginElem = WebDriverWait(browser, 10).until(
         EC.element_to_be_clickable(
-            (By.XPATH, ".//button[contains(text(),'Login to vote')]"))
+            (By.LINK_TEXT, "Login to vote"))
     )
     loginElem.click()
     print('[click] Login to Vote')
