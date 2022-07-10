@@ -22,7 +22,7 @@ with open("config.json") as config:
 
 def main(token, bot):
 
-    driver_path = Path(__file__).parent / "chromedriver"
+    driver_path = Path(__file__).parent / "chromedriver.exe"
     # Initialize Chrome browser
     options = uc.ChromeOptions()
     options.add_argument("--disable-blink-features=AutomationControlled")
@@ -43,7 +43,10 @@ def main(token, bot):
         )
         print("[main] linux")
     else:
-        browser = uc.Chrome(options=options, headless=True)
+        options.binary_location = (
+            "C:\Program Files\Google\Chrome Beta\Application\chrome.exe"
+        )
+        browser = uc.Chrome(options=options, browser_executable_path=str(driver_path))
 
     # browser = uc.Chrome(options=options)
     # Go to top.gg page
