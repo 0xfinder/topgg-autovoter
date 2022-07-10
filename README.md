@@ -8,7 +8,8 @@ The program opens a top.gg vote site, given a bot ID. It then logs in using the 
 
 ## Requirements
 
-- Chromedriver
+- Chrome beta version (As of 10 Jul 2022, latest chrome version 103 does NOT work, install chrome beta v104 [here](https://www.google.com/chrome/beta/))
+- Chromedriver (Included binary in this repo [here](chromedriver.exe) so i doubt you have to install)
 - Python 3
 - Selenium
 - Discord tokens
@@ -17,11 +18,24 @@ The program opens a top.gg vote site, given a bot ID. It then logs in using the 
 
 - Clone repo
 - `cd` into the directory
-- Run ```pip install -r requirements.txt```
-- Download chromedriver and add to PATH
+- Run `pip install -r requirements.txt`
+- ~~Download chromedriver and add to PATH~~
 - Rename tokens.txt.example to tokens.txt and fill in discord tokens
-- Edit config variables at the start of ```multivote.py```
-- Run ```multivote.py```
+- Edit config variables in `config.json`
+- Run `multivote.py`
+
+## Help
+
+- `multivote.py -h`
+
+## Examples
+
+- Running with arguments
+
+```
+# Votes for bot with id
+python multivote.py -b 432610292342587392
+```
 
 ## Additional information
 
