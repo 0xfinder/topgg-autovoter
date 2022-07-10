@@ -21,8 +21,21 @@ The program opens a top.gg vote site, given a bot ID. It then logs in using the 
 - Run `pip install -r requirements.txt`
 - ~~Download chromedriver and add to PATH~~
 - Rename tokens.txt.example to tokens.txt and fill in discord tokens
-- Edit config variables at the start of `multivote.py`
+- Edit config variables in `config.json`
 - Run `multivote.py`
+
+## Help
+
+- `multivote.py -h`
+
+## Examples
+
+- Running with arguments
+
+```
+# Votes for bot with id
+python multivote.py -b 432610292342587392
+```
 
 ## Additional information
 
